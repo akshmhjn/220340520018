@@ -1,0 +1,106 @@
+show databases;
+create database moduleexam;
+use moduleexam;
+
+
+-- SECTION 1
+
+-- Q1
+create table DEPT(DEPTNO int(2),DNAME varchar(15),LOC varchar(10));
+select * from DEPT;
+
+
+
+insert into DEPT values (10,'ACCOUNTING','NEW YORK');
+insert into DEPT values (20,'RESEARCH','DALLAS');
+insert into DEPT values (30,'SALES','CHICAGO');
+insert into DEPT values (40,'OPERATIONS','BOSTON');
+
+select * from DEPT;
+
+-- Q2
+create table EMP(EMPNO int(4),ENAME varchar(10),JOB varchar(9),HIREDATE date,SAL float(7,2),COMM float(7,2),DEPTNO int(2));
+
+select * from EMP;
+
+
+
+insert into EMP values (7839, 'KING', 'MANAGER', '1991-11-17', 5000 ,NULL, 10);
+insert into EMP values (7698, 'BLAKE', 'CLERK', '1981-05-01', 2850, NULL, 30);
+insert into EMP values (7782, 'CLARK', 'MANAGER', '1981-06-09', 2450, NULL, 10);
+insert into EMP values (7566, 'JONES','CLERK', '1981-04-02', 2975, NULL, 20);
+insert into EMP values (7654, 'MARTIN','SALESMAN', '1981-09-28', 1250, 1400, 30);
+insert into EMP values (7499, 'ALLEN', 'SALESMAN', '1981-02-20', 1600, 300, 30);
+
+select * from EMP;
+
+
+-- Q3
+select * from EMP where SAL BETWEEN 2500 and 5000;
+
+-- Q4
+select * from EMP order by ENAME desc;
+select ENAME from EMP order by ENAME desc;
+
+-- Q5
+select lower(JOB) from emp;
+
+
+-- Q6
+select ENAME,LENGTH(ENAME) as ENAMELENGTH from EMP;
+
+
+-- Q7
+select DEPTNO,COUNT(*) from EMP group by DEPTNO;
+
+-- Q8
+select DNAME,ENAME from EMP as e,DEPT as d where e.DEPTNO = d.DEPTNO;
+
+-- Q9
+select ENAME,POSITION('AR' in ENAME) as Ocuuredat from EMP;
+
+-- Q10
+select ENAME,SAL,SAL*0.2 as HRA from EMP;
+
+
+
+-- SECTION 2
+
+-- Q1
+delimiter //
+create  table TEMP(String1 varchar(50),String2 varchar(50),msg varchar(50));
+
+delimiter //
+create procedure PQR(String1 varchar(50),String2 varchar(50))
+begin
+	declare msg varchar(50);
+    declare num int;
+    select LOCATION(String1,String2) into num;
+    if num > 0 then
+		insert into TEMP values(String1,String2,'string1 exists inside string2');
+        else
+        insert into TEMP values(String1,String2,'string1 does not exists in string2');
+     end if;
+     select * from TEMP;
+ end; //
+ delimiter ;
+ 
+ select * from TEMP;
+ 
+ 
+ -- Q2
+ 
+ delimiter //
+ create function FUNC1(side1 int,side2 int,side3 int)
+ returns varchar(50)
+ deterministic
+ begin 
+	if side1+side2 > side3 and
+    side2+side3 > side1 and
+    side3+side1 > side2 then
+		return 'TRUE';
+    else
+		return 'FALSE';
+    end if;
+  end; //
+  delimiter ;
